@@ -2443,3 +2443,52 @@ body.drawer-open {
   align-items: center;
   justify-content: center;
 }
+
+/* ============================================================
+   FIX: Styling <select> untuk Dark Theme
+   (sebelumnya select tidak di-style, option bisa invisible)
+   ============================================================ */
+
+.form-group select,
+.form-control {
+  width: 100%;
+  padding: 12px 14px;
+  background: var(--bg-secondary);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  color: var(--text-primary);
+  font-size: 0.95rem;
+  font-family: inherit;
+  outline: none;
+  transition: var(--transition);
+  cursor: pointer;
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' width='14' height='14' viewBox='0 0 24 24' fill='none' stroke='%2322c55e' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'/%3e%3c/svg%3e");
+  background-repeat: no-repeat;
+  background-position: right 14px center;
+  background-size: 14px;
+  padding-right: 38px;
+}
+
+.form-group select:focus,
+.form-control:focus {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px var(--accent-glow);
+}
+
+/* Option styling — kunci agar teks option terbaca di dark theme */
+.form-group select option,
+.form-control option {
+  background: var(--bg-secondary);
+  color: var(--text-primary);
+  padding: 8px;
+}
+
+.form-group select option:checked,
+.form-control option:checked {
+  background: var(--accent);
+  color: #000;
+  font-weight: 600;
+}
