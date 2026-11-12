@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dashboard — Devangky Store</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+  <header class="header"><div class="container header-inner">
+<a class="logo" href="index.html">⚡ <span data-store-name>Devangky Store</span></a>
+<nav class="site-nav"><a href="produk.html">Produk</a><a href="docs.html">Cara Order</a><a href="pembayaran.html">Pembayaran</a><a href="testimoni.html">Testimoni</a></nav>
+<div id="authContainer" class="auth-btns"></div><div id="mobileAuth"></div></div></header>
+
+  <div class="dashboard-page">
+    <div class="container">
+      <div id="dashLoading" class="admin-loading">
+        <div class="spinner-large"></div>
+        <p>Memuat dashboard...</p>
+      </div>
+
+      <div id="dashContent" style="display:none">
+        <!-- HERO -->
+        <div class="dashboard-hero fade-in-up">
+          <div class="avatar-large" id="dashAvatar" onclick="location.href='profile.html'" style="cursor:pointer" title="Buka Profil">U</div>
+          <div class="hero-info">
+            <h1>Halo, <span id="dashName">User</span>! 👋</h1>
+            <p id="dashEmail">email@contoh.com</p>
+            <span class="member-badge">📅 Member sejak <span id="dashJoin">—</span></span>
+          </div>
+          <div class="hero-actions">
+            <a href="produk.html" class="btn btn-primary">🛒 Pesan Baru</a>
+          </div>
+        </div>
+
+        <!-- STATS -->
+        <div class="stats-grid">
+          <div class="stat-card fade-in-up" style="animation-delay:0.05s">
+            <div class="stat-icon">📦</div>
+            <div class="stat-value" id="statTotalOrders">0</div>
+            <div class="stat-label">Total Pesanan</div>
+          </div>
+          <div class="stat-card fade-in-up" style="animation-delay:0.1s">
+            <div class="stat-icon">⏳</div>
+            <div class="stat-value" id="statPendingOrders">0</div>
+            <div class="stat-label">Menunggu</div>
+          </div>
+          <div class="stat-card fade-in-up" style="animation-delay:0.15s">
+            <div class="stat-icon">✅</div>
+            <div class="stat-value" id="statDoneOrders">0</div>
+            <div class="stat-label">Selesai</div>
+          </div>
+          <div class="stat-card fade-in-up" style="animation-delay:0.2s">
+            <div class="stat-icon">💰</div>
+            <div class="stat-value" id="statSpent">Rp 0</div>
+            <div class="stat-label">Total Belanja</div>
+          </div>
+        </div>
+
+        <!-- ORDERS -->
+        <div class="dashboard-card fade-in-up" style="animation-delay:0.25s">
+          <div class="card-header">
+            <h3>📋 Riwayat Pesanan</h3>
+            <div class="filter-tabs" id="userFilters">
+              <button class="filter-tab active" data-filter="all">Semua</button>
+              <button class="filter-tab" data-filter="menunggu">Menunggu</button>
+              <button class="filter-tab" data-filter="selesai">Selesai</button>
+              <button class="filter-tab" data-filter="batal">Batal</button>
+            </div>
+          </div>
+          <div class="orders-list" id="ordersList"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script type="module" src="assets/js/dashboard.js"></script>
+</body>
+</html>
