@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Pembayaran | Devangky Store</title>
+  <meta name="description" content="Devangky Store — Produk digital premium">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+  <header class="header">
+    <div class="container header-inner">
+      <a class="logo" href="index.html">⚡ <span data-store-name>Devangky Store</span></a>
+      <nav class="site-nav">
+        <a href="produk.html">Produk</a>
+        <a href="docs.html">Cara Order</a>
+        <a href="pembayaran.html">Pembayaran</a>
+        <a href="testimoni.html">Testimoni</a>
+      </nav>
+      <div id="authContainer"></div>
+      <div id="mobileAuth"></div>
+    </div>
+  </header>
+
+  <main>
+    <section class="page-wrap">
+      <div class="page-heading">
+        <h1>Pembayaran</h1>
+        <p>Scan QRIS untuk menyelesaikan pembayaran pesananmu.</p>
+      </div>
+
+      <div class="qr-card">
+        <h2>Scan QRIS</h2>
+        <p>Atas nama: <strong data-qris-name>Nama Pemilik QRIS</strong></p>
+
+        <!-- QR IMAGE (visible by default, inline handler) -->
+        <img
+          id="qrImage"
+          class="qr-image"
+          src="assets/img/qr.png"
+          alt="QRIS Pembayaran"
+          onload="this.style.display='block'; document.getElementById('qrPlaceholder').style.display='none';"
+          onerror="this.style.display='none'; document.getElementById('qrPlaceholder').style.display='grid';"
+        >
+
+        <!-- PLACEHOLDER (hidden by default) -->
+        <div
+          id="qrPlaceholder"
+          class="qr-image"
+          style="display:none; place-items:center; color:#111; padding:20px; font-weight:700; text-align:center;"
+        >
+          QRIS belum diunggah.<br>Ganti file <code>assets/img/qr.png</code>.
+        </div>
+
+        <button class="btn btn-outline" onclick="openQRModal()">Lihat QR Besar</button>
+
+        <div class="form-group" style="text-align:left; margin-top:24px;">
+          <label for="orderProduct">Pilih Produk</label>
+          <select id="orderProduct" class="form-control"></select>
+        </div>
+
+        <button class="btn btn-primary btn-block" onclick="handleSudahBayar()">
+          ✅ Saya Sudah Bayar
+        </button>
+        <p class="muted">Pastikan nominal pembayaran sesuai dengan harga produk.</p>
+      </div>
+    </section>
+
+    <!-- MODAL: Lihat QR Besar -->
+    <div class="modal-overlay" id="qrModal">
+      <div class="modal">
+        <button class="modal-close" onclick="closeModal('qrModal')">×</button>
+        <img id="qrLarge" class="qr-image" src="assets/img/qr.png" alt="QRIS ukuran besar">
+      </div>
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <span data-store-name>Devangky Store</span> · Premium Murah, Proses Cepat, Garansi Full · <span data-jam-online></span>
+  </footer>
+
+  <a id="floatWa" class="float-wa" data-wa href="#" aria-label="Chat WhatsApp">💬</a>
+
+  <!-- MODAL: Login Required -->
+  <div class="modal-overlay" id="loginRequired">
+    <div class="modal">
+      <button class="modal-close" onclick="closeModal('loginRequired')">×</button>
+      <h2>Login diperlukan</h2>
+      <p>Silakan login untuk melanjutkan pemesanan.</p>
+      <a class="btn btn-primary" href="login.html">Login sekarang</a>
+    </div>
+  </div>
+
+  <script type="module" src="assets/js/payment.js"></script>
+</body>
+</html>
