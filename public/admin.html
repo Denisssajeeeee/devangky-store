@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Panel — Devangky Store</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+  <header class="header"><div class="container header-inner">
+<a class="logo" href="index.html">⚡ <span data-store-name>Devangky Store</span></a>
+<nav class="site-nav"><a href="produk.html">Produk</a><a href="docs.html">Cara Order</a><a href="pembayaran.html">Pembayaran</a><a href="testimoni.html">Testimoni</a></nav>
+<div id="authContainer" class="auth-btns"></div><div id="mobileAuth"></div></div></header>
+
+  <div class="dashboard-page">
+    <div class="container">
+      <!-- Loading -->
+      <div id="adminLoading" class="admin-loading">
+        <div class="spinner-large"></div>
+        <p>Memverifikasi akses admin...</p>
+      </div>
+
+      <!-- Denied -->
+      <div id="adminDenied" style="display:none">
+        <div class="empty-state" style="padding:80px 20px">
+          <div class="icon" style="font-size:4rem">🚫</div>
+          <h2>Akses Ditolak</h2>
+          <p>Halaman ini hanya bisa diakses oleh admin.</p>
+          <a href="index.html" class="btn btn-primary" style="margin-top:16px">Kembali ke Beranda</a>
+        </div>
+      </div>
+
+      <!-- Content -->
+      <div id="adminContent" style="display:none">
+        <div class="dashboard-hero admin-hero fade-in-up">
+          <div class="avatar-large">🛡️</div>
+          <div class="hero-info">
+            <h1>Panel Admin</h1>
+            <p>Kelola pesanan & produk toko</p>
+          </div>
+          <div class="hero-actions">
+            <button onclick="refreshAdminData()" class="btn btn-outline">🔄 Refresh</button>
+          </div>
+        </div>
+
+        <!-- Stats -->
+        <div class="stats-grid">
+          <div class="stat-card fade-in-up" style="animation-delay:0.05s">
+            <div class="stat-icon">📦</div>
+            <div class="stat-value" id="statTotal">0</div>
+            <div class="stat-label">Total Pesanan</div>
+          </div>
+          <div class="stat-card fade-in-up" style="animation-delay:0.1s">
+            <div class="stat-icon">⏳</div>
+            <div class="stat-value" id="statPending">0</div>
+            <div class="stat-label">Menunggu</div>
+          </div>
+          <div class="stat-card fade-in-up" style="animation-delay:0.15s">
+            <div class="stat-icon">✅</div>
+            <div class="stat-value" id="statDone">0</div>
+            <div class="stat-label">Selesai</div>
+          </div>
+          <div class="stat-card fade-in-up" style="animation-delay:0.2s">
+            <div class="stat-icon">💰</div>
+            <div class="stat-value" id="statRevenue">Rp 0</div>
+            <div class="stat-label">Total Pendapatan</div>
+          </div>
+        </div>
+
+        <!-- Tabs -->
+        <div class="admin-tabs">
+          <button class="admin-tab active" data-tab="orders">📋 Pesanan</button>
+          <button class="admin-tab" data-tab="products">📦 Produk</button>
+        </div>
+
+        <!-- Tab: Orders -->
+        <div id="tabOrders" class="admin-tab-content active">
+          <div class="dashboard-card">
+            <div class="card-header">
+              <h3>📋 Semua Pesanan</h3>
+              <div class="filter-tabs" id="adminFilters">
+                <button class="filter-tab active" data-filter="all">Semua</button>
+                <button class="filter-tab" data-filter="menunggu">Menunggu</button>
+                <button class="filter-tab" data-filter="selesai">Selesai</button>
+                <button class="filter-tab" data-filter="batal">Batal</button>
+              </div>
+            </div>
+            <div class="search-box">
+              <input type="text" id="adminSearch" placeholder="🔍 Cari nama, email, atau produk...">
+            </div>
+            <div class="orders-list" id="adminOrdersList"></div>
+          </div>
+        </div>
+
+        <!-- Tab: Products -->
+        <div id="tabProducts" class="admin-tab-content">
+          <div class="dashboard-card">
+            <div class="card-header">
+              <h3>📦 Manajemen Produk</h3>
+              <button class="btn btn-primary" onclick="openProductModal()">➕ Tambah Produk</button>
+            </div>
+            <p style="color:var(--text-muted);font-size:0.85rem;margin-bottom:16px">
+              Produk di sini yang tampil di halaman utama website.
+            </p>
+            <div class="orders-list" id="adminProductsList"></div>
+            <div id="noProductsBanner" class="empty-state" style="display:none;padding:60px 20px">
+              <div class="icon" style="font-size:3rem">📦</div>
+              <h3 style="margin-bottom:8px">Belum ada produk di database</h3>
+              <p style="font-size:0.9rem;max-width:400px;margin:0 auto 20px">
+                Klik tombol di bawah untuk memuat 7 produk default. Setelah itu kamu bisa edit, hapus, atau tambah produk baru.
+              </p>
+              <button onclick="seedDefaultProducts()" class="btn btn-primary">
+                📥 Load 7 Produk Default
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL: Tambah/Edit Produk -->
+  <div class="modal-overlay" id="productModal">
+    <div class="modal product-modal">
+      <button class="modal-close" onclick="closeModal('productModal')">×</button>
+      <h3 id="productModalTitle">Tambah Produk</h3>
+      <form onsubmit="saveProduct(event)" id="productForm">
+        <input type="hidden" id="productId">
+
+        <div class="form-row">
+          <div class="form-group">
+            <label>Icon (emoji)</label>
+            <input type="text" name="icon" id="pIcon" placeholder="🎬" maxlength="4">
+          </div>
+          <div class="form-group" style="flex:2">
+            <label>Nama Produk *</label>
+            <input type="text" name="name" id="pName" required placeholder="AM Premium">
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label>Deskripsi Singkat</label>
+          <input type="text" name="desc" id="pDesc" placeholder="Alight Motion Pro full fitur.">
+        </div>
+
+        <div class="form-group">
+          <label>Fitur Produk</label>
+          <div id="featuresList"></div>
+          <button type="button" class="btn btn-outline btn-sm" onclick="addFeatureInput()">➕ Tambah Fitur</button>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label>Harga Tampil *</label>
+            <input type="text" name="price" id="pPrice" required placeholder="Rp 20.000">
+          </div>
+          <div class="form-group">
+            <label>Harga Angka (Rp) *</label>
+            <input type="number" name="priceValue" id="pPriceValue" required placeholder="20000" min="0">
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label>Periode</label>
+            <input type="text" name="period" id="pPeriod" placeholder="1 Bulan">
+          </div>
+          <div class="form-group">
+            <label>Garansi</label>
+            <input type="text" name="garansi" id="pGaransi" placeholder="30 hari">
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label>Badge (opsional)</label>
+            <input type="text" name="badge" id="pBadge" placeholder="BEST SELLER">
+          </div>
+          <div class="form-group">
+            <label>Urutan Tampil</label>
+            <input type="number" name="order" id="pOrder" value="1" min="1">
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label>Pesan WhatsApp Otomatis</label>
+          <input type="text" name="wa" id="pWa" placeholder="Halo min, mau beli AM Premium 20k">
+        </div>
+
+        <div class="form-group">
+          <label class="form-check">
+            <input type="checkbox" name="aktif" id="pAktif" checked>
+            Tampilkan produk di katalog
+          </label>
+        </div>
+
+        <div style="display:flex;gap:10px;margin-top:8px">
+          <button type="button" class="btn btn-outline btn-block" onclick="closeModal('productModal')">Batal</button>
+          <button type="submit" class="btn btn-primary btn-block">💾 Simpan</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <script type="module" src="assets/js/admin.js"></script>
+</body>
+</html>
